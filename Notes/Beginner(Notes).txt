@@ -1,0 +1,30 @@
+Node.js is a javascript runtime built on top of Chrome's V8 engine.
+    What this actually means is that javascript is usually localised to the browser. Node brings javascript out of
+    the browser and executes it inside a different runtime which is node.js itself. This allows us to create servers
+    using javascript. V8 engine actually executes the javascript.
+
+Node should not be used for applications involving CPU intensive tasks on the server side. 
+Node.js can be used for building real time, WEB API's etc.
+
+Asynchronous Nature of Node.js
+    Synchronous code is blocking code because it blocks the execution of everything else in the program.
+    Similarly Asynchronous code is non blocking and calls a callback function when the process is completed.
+
+There are two kinds of dependencies that can be installed using npm:
+
+1. Regular Dependencies : These are the dependencies that are used for creating the project. Used inside code. (eg. slugify)
+2. Development Dependencies : These are the dependencies that make things easier while coding but not used in production. (eg. nodemon)
+
+
+Package Versioning:
+    x.y.z
+    x => Major changes to the package. Can have breaking changes.
+    y => Minor changes, new functionality but no breaking changes.
+    z => Bug Fixes.
+    
+    Can be prefixed with ^, ~ or *
+    ^ means minor changes (Most Used)
+    ~ means only bug fixes (Safest)
+    * means all changed
+
+Use npm uninstall to remove a module from package.json
