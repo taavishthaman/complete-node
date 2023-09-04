@@ -28,3 +28,132 @@ Package Versioning:
     * means all changed
 
 Use npm uninstall to remove a module from package.json
+
+How does the web work?
+
+What happens when we access a webpage (type a url in our browser)
+
+1. The client sends a request to the server where the webpage is located. The server then returns a response to the client which
+contains the webpage requested. This is called Client-Server architecture.
+
+The client types https://www.google.com/maps
+
+    => https : This is the protocol for the website.
+    => google.com : This is the domain name.
+    => maps : This is the resource name.
+
+DNS (Domain name server) is a special server that works like a phonebook. It matches the domain name to the IP address.
+This happens through an ISP(Internet Service Provider).
+
+216.58.211.206:443 ( This is what the domain name matches to and the last part is the port number )
+
+2. A TCP/IP connection is established between client and browser. TCP/IP are the communication protocols that define exactly
+how the data flows across the web. They are the internet's fundamental control structure. 
+
+3. Now a HTTP request is made and the server sends a HTTP response.
+
+Structure of a HTTP request:
+GET /maps HTTP/1.1
+
+Host : www.google.com
+User-Agent : Mozilla / 5.0
+Accept-Language : en-US
+
+<BODY>
+
+GET is a HTTP method. There are 4 kinds, GET, POST, PUT, PATCH.
+/maps is the request target.
+HTTP/1.1 is the http version being used.
+The rest are the headers.
+
+And the last is the body in case of a post request.
+
+HTTPS is HTTP encrypted using SSL or TLS.
+
+Structure of a HTTP response:
+HTTP/1.1 200 OK
+
+Date : Fri, 18 Jan 2021
+Content-Type : text/html
+
+<BODY>
+
+The job of TCP is the breakup the requests and responses into thousands of chunks which will be then reassembled when they reach
+their destination.
+
+The job of the IP protocol is to make sure that each packet reaches the correct destination.
+
+Static vs Dynamic vs API
+
+Static websites usually have no or minimal backend
+Dynamic websites are server side rendered using templates and data from database and also a server app and then presented on
+the browser.
+The API based website is has API's coming from the server and a frontend framework like react.
+
+
+Node behind the scenes:
+
+Node.js internally uses V8 Engine and libuv. V8 executes javascript code and libuv gives node its event loop and thread and
+thread pool. Libuv is written in c++ and javascript that's why it can interact with computer's file system and ports behind
+the scenes. Node.js also has more internal tools like http-parser and zlib etc.
+
+Nodejs has only one thread but it has a threadpool which has 4 additional threads which can be configured upto 128 threads.
+Node.js uses event loop to execute tasks but if some task is really heavy it is offloaded to the thread pool.
+
+The Event Loop:
+
+    The event loop detects the events transmitted by the tasks like a new http request, a timer expired and finished file 
+    reading etc. and executes the callback function associated with them. If the callback function has a heavy task then it
+    offloads it to the thread pool.
+
+    There are 4 main phases of an event loop with 2 extra phases. All of these phases have their own callback queues.
+    In the first 4 phases the callback queue is processed for one phase first and then the event loop processes the next
+    phase. If any event of the extra phases comes in while one phase is being processed then instead of moving to the next
+    phase event loop will process the callback queue of one of the extra phases queue.
+
+    1. Expired timer callbacks. (For setInterval)
+    2. I/O polling and callbacks. (For I/O events, file reading etc.)
+    3. setImmediate callback.
+    4. Close callback
+
+    Extra phases
+    1. Process.NextTick() Queue
+    2. Microtasks Queue (For promises)
+
+    Now if there are no more timer functions running and no more I/O processes remaining then the event loop will end otherwise
+    event loop will keep executing.
+
+    Event loop performs orchestration of tasks.
+
+Event driven architecture:
+
+Node follows the event driven architecture where there is an Event Emmitter, an Event Listener and a Attached callback function.
+The event Emmitter emits and event which is listened to bu the event listener which then further calls an attached callback
+function.
+
+Event emmitter and an Event Listener follow an observer pattern.
+
+Streams
+    Used to process (read and write) data piece by piece (chunks), without completing the whole read or write operation, and 
+    therefore without keeping all the data in memory.
+
+    Perfect for handling large volumes of data like video.
+
+    Streams are instances of event emmitter class.
+
+    There are 4 types of streams in node.js
+
+    1. Readable Streams : Streams from which we can read (consume) data. Example http requests, fs read stream. data and 
+        event are important events. pipe() and read() functions.
+
+    2. Writable Steams : Streams to which we can write data. http responses and fs write streams. drain and finish are
+        important events. write() and end() are functions.
+
+    3. Duplex Streams : Both readable and writable. net web socket.
+
+    4. Transform Streams : Duplex stream which can transform data as it is written or read. zlib Gzip creation.
+
+Requiring Modules:
+
+1. Every javascript file is treated as a separate module.
+    
