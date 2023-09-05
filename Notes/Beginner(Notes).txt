@@ -156,4 +156,15 @@ Streams
 Requiring Modules:
 
 1. Every javascript file is treated as a separate module.
+
+
+Promises:
+
+    Promise was introduced in ES6. A promise takes two arguments inside its executor function which are resolve and reject.
+    resolve is used when code executes successfully and reject is used when some error occurs. Result of promise can be 
+    accessed using then and catch.
+
+async/await 
+
+    Introduced in ES8. Instead of .catch() function to handle errors, wrap the async/await code inside a try catch block.
     

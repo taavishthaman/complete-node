@@ -1,0 +1,33 @@
+Express is an abstracted wrapper around node.js. It provides functionality to setup server code and routes with a lot less
+pain in the ass.
+
+What is a API:
+
+An API(Application programming interface) is a piece of software that can be used by another piece of software in order to
+allow applications to talk to each other.
+
+In context of web development the API's that we build are called Web API's but the term Application can have a broader
+meaning.
+
+1. Node.js fs or http API (Node API's)
+2. Browser's DOM Javascript API.
+3. With OOP, when exposing methods to the public, we're creating an API.
+
+The REST architecture:
+
+REST (Representational State Transfer) is an architecture for developing web API's and they should follow 5 important rules.
+
+1. Separate API's into logical resources (eg: /tours, /users)
+2. Expose structured, resource-based URLs
+3. Use HTTP methods (verbs) GET /tours instead of getTours
+4. Send data as JSON (usually). JSON can be further enveloped into some more JSON like this {status : "success", data : {DATA HERE}}
+5. Be stateless. State management should be done on the client side and not on the server. Server should not have to remember
+    any state.
+
+Status Codes for http methods:
+
+1. 200 : Ok (For get request and patch request)
+2. 201 : Created (For post request)
+3. 204 : No content (For delete request)
+
+The callback function inside a http method is called a route handler.
