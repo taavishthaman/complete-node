@@ -31,3 +31,67 @@ Status Codes for http methods:
 3. 204 : No content (For delete request)
 
 The callback function inside a http method is called a route handler.
+
+Everything is middleware in react. Even the router handler functions. Express apps are developed by keeping the request response
+cycle in mind. Request response cycle can be visualised as a pipeline which has an incoming request, then all the middlewares
+in the middleware stack are applied to that request and finally the data is sent to the client as a response.
+
+
+MongoDB
+
+MongoDB is a noSQL database. Each database can contain one or more collections (Like Tables). Each collection can contain
+a data structure called a document.
+
+MongoDB is a document database with the scalability and flexibility that you want with the querying and indexing that you need.
+
+    Features of MongoDB
+
+    1. Document Based : Stores data in documents.
+    2. Scalable : Very easy top distribute data across multiple machines as your users and amount of data grows.
+    3. Flexible : No document data schema required, so each document can have different types of fields.
+    4. Performant : Embedded data models, indexing, sharding, flexible documents, native duplication etc.
+    5. Free and Open Source
+
+Document Structure:
+    BSON : Data format MongoDB uses for Data Storage. Like JSON but typed. So MongoDB documents are typed.
+
+    MongoDB is non relational and can have data embeddings/Data denormalization. This means including related data inside
+    a single document. This allows for quicker access and easier data models.
+
+    Reverse is true in relational databases. The information is separated inside a new table and joins are created.
+
+Just like express is a layer of abstraction on node, mongoose is a layer of abstraction upon mongoDB.
+
+MVC (Model View Controller)
+
+Model : Business Logic
+Controller : Application Logic
+View : Presentation Logic
+
+Application Logic vs Business Logic
+
+Application Logic is the code that is only concerned about the application's implementation, not the underlying business
+problem we are trying to solve. (Eg showing and selling tours)
+
+Business logic is the code that actually solves the business problem we are trying to solve. Its directly related to business
+rules, how the business works and business needs.
+
+Examples:
+1. Creating new tours in the database.
+2. Checking if the user's password is correct.
+3. Validating user input data.
+4. Ensuring only users who bought the tour can review it.
+
+
+Aggregation Pipeline:
+
+    Aggregation Pipeline is a pipeline which is attached to a Model and does some processing to any document that is being added
+    to a collection. Aggregation pipeline is like a regular query but the difference is that we can manipulate the data in 
+    multiple steps.
+
+Virtual Properties:
+
+    Virtual properties are fields which are not stored in the database in order to save space but can be derived from other fields.
+
+
+Fat Models - Thin Controllers philosophy.

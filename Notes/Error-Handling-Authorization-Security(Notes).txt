@@ -1,0 +1,14 @@
+1. Whatever passed inside the next() is an error and if and error occurs, then express will skip all middleware functions
+and go directly to the global error handling function.
+
+2. JWT is used to authorize users. It follows the principals that an API should be stateless.
+
+During signup user enters his credentials and the server checks if they exist inside the DB. The server then sends a JWT
+token to the client which is saved in localStorage or cookie. Now when the user wants to access some protected route, a JWT
+token must be sent which is then verified on the server.
+
+The signing algorithm starts first:
+    First the Header + Payload and the secret key is used to generate a signature. Together with Header and Signature, JWT
+    token is formed which then gets sent to the server. The test signature is then generated at the server using the secret
+    key and if the signature and test signature match, then the data has not been tempered with and the authentication is
+    successfull.
