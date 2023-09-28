@@ -1,46 +1,48 @@
-const EventEmmitter = require('events');
+//////////////Observer Pattern/////////
+const EventEmitter = require('events');
 const http = require('http');
 
-class Sales extends EventEmmitter {
+class Sales extends EventEmitter {
   constructor() {
-    super();
+    super(); //This is important as this class will get access to all the methods of the parent class
   }
 }
 
-const myEmmitter = new Sales();
+const myEmitter = new Sales();
 
-//Observers, Listeners
-myEmmitter.on('newSale', () => {
-  console.log('There was a new sale!');
+//Listen to Events
+myEmitter.on('newSale', () => {
+  console.log('There was a new Sale!');
 });
 
-myEmmitter.on('newSale', () => {
-  console.log('Customer Name: Jonas');
+myEmitter.on('newSale', () => {
+  console.log('Customer Name : Jonas');
 });
 
-myEmmitter.on('newSale', (stock) => {
+myEmitter.on('newSale', (stock) => {
   console.log(`There are now ${stock} items left in stock.`);
 });
 
-//Emmitter
-myEmmitter.emit('newSale', 9);
+//Emit Event
+myEmitter.emit('newSale', 9);
+//////////////Observer Pattern/////////
 
-////////////////////////////
 const server = http.createServer();
 
 server.on('request', (req, res) => {
-  console.log('Request Recieved!');
-  res.end('Request Recieved!');
+  console.log('Request Received');
+  console.log(req.url);
+  res.end('Request Received');
 });
 
 server.on('request', (req, res) => {
-  console.log('Another request!!!');
+  console.log('Another Request 🍄');
 });
 
-server.close('close', () => {
-  console.log('Server Closed!');
+server.on('close', () => {
+  console.log('Server Closed');
 });
 
 server.listen(8000, '127.0.0.1', () => {
-  console.log('Waiting for requests!');
+  console.log('Waiting for requests');
 });

@@ -1,0 +1,152 @@
+NodeJs Basics
+
+1. What is node.js
+    Node.js is a javascript runtime built on google's open source V8 javascript engine.
+
+    Javacript by default runs inside a browser. But node.js is a non browser envinronment for running javascript code.
+    It uses google's v8 engine to parse and run javascript code.
+
+    There are some additional capabilities provided buy node such as accessing file system and IO which makes node perfect
+    for using javascript to build backend web applications.
+
+    Nodejs is single-threaded, based on event driven, non blocking IO model.
+    Perfect for building fast and scalable data intensive applications.
+
+   Imp : Not preferred for CPU intensive heavy server side processing.
+
+   Using the same language across entire stack is faster and more efficient.
+
+   Huge library of open source packages. (NPM)
+
+2. Node REPL
+    REPL stands for Read, Eval, Print, Loop. Inside REPL you can write any javascript code.
+    Use _ to access the previous value in the REPL.
+
+3. Modules in Nodejs
+    Nodejs is built around concept of modules. All kinds of additional functionality is available in modules.
+    Filesystem module = fs. Modules must be required in order to use them.
+
+4. Asynchronous nature of Nodejs
+    Synchronous or Blocking: fs.readFileSync() is an example of synchronous code. Since this task needs to be finished in
+    order for the next line of code to be executed.
+
+    Asynchronous or non blocking: fs.readFile() is an example of asynchronous code since this task can be executed in the
+    background and the rest of the code is non blocked. Heavy work is offloaded to the work done in the background.
+
+    The Node.js process where our app runs is running on only one thread. Code is executed by only one thread.
+
+    In case of fs.readFile('filename', 'loc', 'utf-8', () => {}). The reading of the file is done in the background and
+    not in the main application thread. So once the file is read in the background, the callback function will be executed.
+
+    Hence this is non blocking I/O. I/O is input/output or things like reading/writing files or preocessing requests etc.
+
+    However this can lead to callback hell which should be replaced with ES6 promises or ES8 async/await.
+
+    Essentialy node.js is built around callbacks to implement asynchronous behaviour.
+
+5. Servers in pure node.
+
+    What is a header: Header is a piece of information about the response.
+
+
+Nodejs Behind the Scenes
+
+1.  Nodejs has many dependencies and the 2 most important dependencies are, V8 Engine and LibUV.
+
+    V8 Engine converts javascript code into machine code which a computer can understand.
+    Libuv is an open source library with a strong focus on asynchronous IO. Its what gives node ability to communicate with
+    file system, IO capabilities etc. Besides all that Libuv also implements Event Loop and Thread Pool.
+
+    The event loop is responsible for handling lighter tasks like executing callbacks and network IO whereas thread pool is
+    responsible for handling more hevy tasks like file access and compression. Libuv is written in C++. V8 is written in both
+    javascript and C++. Nodejs provides a layer of abstraction in order to help the developer to access all these functions
+    in pure javascript.
+
+2. When a nodejs application is running on the computer we call it a nodejs process. Inside this process the javascript code
+    is executed in a single thread. 
+
+    When the nodejs program is initialised, a couple of things happen.
+
+    1. Top level code(Code that is not present inside callbacks) is executed.
+    2. Modules are required.
+    3. Event callbacks are registered.
+    4. Event loop starts running. The tasks which are very heavy are offloaded to the thread pool and not handled by the event
+        loop. (eg: Data compression, DNS Lookups, File system APIs, Cryptography)
+
+3. The Event Loop
+    Event loop is the heart of nodejs architecture. All the non top level code that is inside the callback functions is
+    executed in the event loop.
+
+    Nodejs uses event driven architecture. Events are emmitted, event loop picks them up, callbacks are executed.
+
+    For example, a new http request, timer expired or finished file reading, all these tasks will fire off an event which
+    will signal the event loop to execute the callback functions associated with them.
+
+    Event loop does the orchestration of tasks.
+
+    The event loop has multiple phases and each phase has its own callback queue.
+
+    1. The first phase is for expired countdown timer callbacks.
+    2. The second one is for I/O polling and executing I/O callbacks. Polling means looking for new I/O events and putting
+    them in callback queue. (I/O is networking and file access).
+    3. The third phase is for setImmediate callbacks. setImmediate is a special function which can run tasks immediately
+    after the I/O phase.
+    4. The fourth phase is for close callbacks. (Example when a webserver or a websocket closes)
+
+    There are 2 more callback queues except these 4 callback queues which are:
+    1. Process.NextTick() Queue
+    2. Other Microtasks Queue (Resolved Promises)
+     
+    If there are any tasks present in these 2 queues, they will be executed first after finishing the current phase in the
+    event loop.
+
+    After reaching the final close phase, nodejs checks whether there are any more I/O or timer tasks remaining. If they
+    are remaining then the event loop goes back to the first phase, otherwise the program exits.
+
+    Its the programmer's responsibility to make sure that the code does not block the event loop.
+
+4. Events and Event driven architecture
+    Event Emmitters emit events which are then picked up by Event Listeners which then execute the callback function
+    attached to them.
+
+    Event Emmitter and Event Listener together form Observer Pattern where the listener is the observer.
+
+    Server can also be setup to listen to events.
+
+5. Streams
+    Used to process (read and write) data piece by piece (chunks), without completing the whole read or write
+    operation, and threfore without keeping all data in memory.
+
+    Streams are instances of event emitter class.
+    In nodejs there are 4 different types of streams
+
+    1. Readable Stream: Streams from which we can read. eg: http requests and fs read stream.
+
+    2. Writable Stream: Streams to which we can write. eg: http response and fs write stream.
+
+    3. Duplex Stream: Streams that are both readable and writable. eg: Web Socket
+
+    4. Transform Stream: Duplex streams that transform the data as it is written or read. eg: Zlib to compress data.
+
+6. Modules
+    Each Javascript file is treated as a separate module. Nodejs uses commonJS module system which has module.exports
+    and require().
+
+    There are 5 steps which happen when requiring a module.
+
+    1. Resolving & Loading: Since there are three types of modules, core modules, developer modules and third party
+        modules. Node has to resolve and load each of them.
+
+    2. Wrapping: Each module is wrapped with a special IFFE function. This gives the developers access to special 
+    methods for each module like require, exports etc anf also it keeps the context of the module private and the
+    variables used in the module are not leaked gloabally.
+
+    3. Execution: Code inside module gets executed by nodejs runtime.
+
+    4. Returning Exports: require function returns exports of the required module.
+        If only one function needs to be exported, use module.exports = Calculator;
+        If more than one function needs to be executed make each function a property of the exports object
+        like exports.add, exports.subtract
+
+    5. Caching: 
+        Modules are cached. They are only executed once and in the subsequent calls they are derived from cache.
