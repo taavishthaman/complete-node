@@ -138,7 +138,7 @@ Nodejs Behind the Scenes
         modules. Node has to resolve and load each of them.
 
     2. Wrapping: Each module is wrapped with a special IFFE function. This gives the developers access to special 
-    methods for each module like require, exports etc anf also it keeps the context of the module private and the
+    methods for each module like require, exports etc and also it keeps the context of the module private and the
     variables used in the module are not leaked gloabally.
 
     3. Execution: Code inside module gets executed by nodejs runtime.

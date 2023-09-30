@@ -1,0 +1,55 @@
+Data Modeliing:
+    In data modelling we take unstructured data and convert it into structured data (a logical data model). 
+
+    1. Types of relationship in data:
+
+        1. One to One (1:1) relationship. One movie can have only one Name.
+
+        2. One to Many (1:N) This relationship can be further divided into 3 categories:
+            1. One to Few: One movie can have a few awards. (1-100 awards)
+            2. One to Many: One movie can have many Reviews (100's or 1000's)
+            3. One to Ton: One application can have a ton of logs. (Millions)
+
+        3. Many to Many (N:N). One movie can have many actors but one actor can star in many movies.
+
+
+    2. Referencing vs Embedding:
+        If we have two datasets then we can either represent them in referenced/normalized form or embedded/denormalized
+        form.
+
+        In the normalized form all the data is nicely separated. Eg: For a movie, a reference can be created with actors 
+        using an actor id array. This is called child references. Advantages are that its easier to query each document on
+        its own which can increase performance, but we need to query the database twice.
+
+        In the denormalized form we can embed actor data inside the movie data. Advantages for embedded structure is fewer
+        calls to the database which is better for performance , but impossible to query the embedded document on its own.
+
+    3. Framework to decide embedding vs referencing:
+
+        There are 3 points to keep in mind:
+
+        1. Relationship Type: How two datasets are related to each other.
+            1. Embedding: 1:Few, 1:Many
+            2. Referencing: 1:Many, 1:Ton, Many:Many 
+
+        2. Data access patterns: How often data is read or written. Read/Write ratio.
+
+            1. Embedding: Data is mostly read. Data does not change quickly. High read/write ratio.
+            2. Referencing: Data is updated a lot. Low read/write ratio.
+
+        3. Data closeness: How much the data is related, how we want to query.
+            1. Embedding: Datasets really belong to each other.
+            2. Referencing: We frequently need to query both datasets on their own.
+
+    4. Types of referencing (If we choose to normalize data):
+            1. Child Referencing: Related child documents ID's are stored in a parent document inside an array. Not a good
+            idea if the array can grow infinitely. Good for 1:Few
+
+            2. Parent Referencing: The opposite way of child referencing: In each child document, there is a reference to
+            the parent. Good for 1:Many or 1:Ton
+
+            3. Two way referencing: Combination of both Child and Parent Referncing. Both have Arrays. Good for Many:Many
+
+Indexes:
+    We can create indexes for the fields that are most queried for. This will improve performance as mongodb will not have
+    to look through the entire collection.

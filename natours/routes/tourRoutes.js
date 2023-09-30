@@ -11,25 +11,42 @@ const {
 } = require('../controllers/tourController');
 
 const authController = require('../controllers/authController');
+const reviewRouter = require('./reviewRoutes');
 
 const router = express.Router();
 
-// router.param('id', checkId);
+// POST /tour/234fad4/reviews
+// GET /tour/234fad4/reviews
 
-// router.param('id', (req, res, next, val) => {
-//   console.log(`Tour ID is ${val}`);
-//   next();
-// });
+router.use('/:tourId/reviews', reviewRouter);
+
 router.route('/top-5-cheap').get(aliasTopTours, getAllTours);
-router.route('/monthly-plan/:year').get(getMothlyPlan);
+router
+  .route('/monthly-plan/:year')
+  .get(
+    authController.protect,
+    authController.restrictTo('admin', 'lead-guide', 'guide'),
+    getMothlyPlan,
+  );
 router.route('/tour-stats').get(getTourStats);
 
-router.route('/').get(authController.protect, getAllTours).post(createTour);
+router
+  .route('/')
+  .get(getAllTours)
+  .post(
+    authController.protect,
+    authController.restrictTo('admin', 'lead-guide'),
+    createTour,
+  );
 
 router
   .route('/:id')
   .get(getTour)
-  .patch(updateTour)
+  .patch(
+    authController.protect,
+    authController.restrictTo('admin', 'lead-guide'),
+    updateTour,
+  )
   .delete(
     authController.protect,
     authController.restrictTo('admin', 'lead-guide'),
